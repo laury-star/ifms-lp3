@@ -1,0 +1,123 @@
+const express = require("express");
+const app = express();
+
+const filmes = [
+    { id: 1, titulo: "A Origem", ano: 2010, nota: 10 },
+    { id: 2, titulo: "A Familia do Futuro", ano: 2007, nota: 9 },
+    { id: 3, titulo: "Homem-Aranha", ano: 2002, nota: 8 },
+    { id: 4, titulo: "Interestelar", ano: 2014, nota: 10 },
+    { id: 5, titulo: "Click", ano: 2006, nota: 9 }
+  ];
+  app.get("/filmes", (req, res) => {
+    res.json(filmes);
+  });
+  app.get('/filmes/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const filme = filmes.find(f =>f.id === id);
+    if (filme) {
+      res.json(filme);
+    } else {
+      res.send("Filme não encontrado" );
+    }
+  });
+  app.get('/filmes/bem-avaliados',(req,res)=>{
+    const bemAvaliados = filmes.filter(f =>f.nota >= 9);
+    res.json(bemAvaliados);
+  });
+  app.get('/filme/ano/:ano', (req,res)=>{
+    const ano = parseInt(req.params.ano);
+    const filmesDoAno= filmes.find(f =>f.ano === ano);
+    if (filmesDoAno) {
+      res.json(filmesDoAno);
+    } else {
+      res.send("Nenhum filme desse ano foi encontrado");
+    }
+  });
+  //2
+
+const musicas = [
+  { id: 1, titulo: "Dark Red", artista:"  Steve Lacy", nota: 10 },
+  { id: 2, titulo: "Instant Crush", artista: "Daft Punk", nota: 9 },
+  { id: 3, titulo: "Chop Suey!", artista: "System of a Down", nota: 8 },
+  { id: 4, titulo: "Backstage", artista: "Matuê", nota: 7 }
+];
+
+
+app.get("/musicas", (req, res) => {
+  res.json(musicas);
+});
+
+
+app.get("/musicas/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const musica = musicas.find(m => m.id === id);
+
+  if (musica) {
+    res.json(musica);
+  } else {
+    res.send("Música não encontrada");
+  }
+});
+
+
+app.get("/artista/:nome", (req, res) => {
+  const nome = req.params.nome;
+
+  const resultado = musicas.filter(
+    m => m.artista === nome
+  );
+
+  if (resultado) {
+    res.json(resultado);
+  } else {
+    res.send("Nenhuma música encontrada para esse artista");
+  }
+});
+
+
+app.get("/top", (req, res) => {
+  const top = musicas.filter(m => m.nota >= 9);
+  res.json(top);
+});
+
+  //3
+  const produtos = [
+  { id: 1, nome: "Notebook", preco: 3500 },
+  { id: 2, nome: "Mouse", preco: 80 },
+  { id: 3, nome: "Teclado", preco: 150 },
+  { id: 4, nome: "Monitor", preco: 1200 }
+];
+
+app.get("/produtos", (req, res) => {
+  res.json(produtos);
+});
+
+
+app.get("/produtos/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const produto = produtos.find(p => p.id === id);
+
+  if (produto) {
+    res.json(produto);
+  } else {
+    res.send("Produto não encontrado");
+  }
+});
+
+
+app.get("/caros", (req, res) => {
+  const caros = produtos.filter(p => p.preco > 1000);
+  res.json(caros);
+});
+
+
+app.get("/baratos", (req, res) => {
+  const baratos = produtos.filter(p => p.preco < 200);
+  res.json(baratos);
+});
+    
+  const PORTA = 2003;
+app.listen(PORTA, () => {
+    console.log(`Servidor rodando em http://localhost:${PORTA}`);
+
+});

@@ -1,6 +1,6 @@
 
 const express = require("express");
-//cria a aplicação
+
 const app = express();
 
 app.use((req, res, next) => {
